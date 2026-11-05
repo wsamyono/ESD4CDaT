@@ -3,69 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Efficient System Design for Cancer Detection and Treatment</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ESD4CDaT | Efficient System Design for Cancer Detection and Treatment</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for LaTeX support -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-blue: #0A2540;
+            --accent-blue: #0066CC;
+            --bright-yellow: #FFC72C;
+            --dark-yellow: #E5B214;
+            --bg-light: #F8FAFC;
+            --text-main: #334155;
+            --white: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), #1E3A8A);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 5px solid var(--bright-yellow);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #93C5FD;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--bright-yellow);
+            color: var(--primary-blue);
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--bright-yellow);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2 i {
+            color: var(--accent-blue);
+        }
+
+        .goals-grid, .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .goal-card, .team-card {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent-blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .goal-card:hover, .team-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .goal-card h3, .team-card h3 {
+            color: var(--primary-blue);
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .goal-card p, .team-card p {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .team-card span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .pub-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .pub-item {
+            background: var(--bg-light);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--bright-yellow);
+        }
+
+        .pub-item strong {
+            color: var(--primary-blue);
+        }
+
+        .repo-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-light);
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .repo-box a {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .repo-box a:hover {
+            background-color: var(--accent-blue);
+        }
+
+        .nsf-link-box {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .nsf-link-box a {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .nsf-link-box a:hover {
+            background-color: #1D4ED8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748B;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            section { padding: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Efficient System Design for Cancer Detection and Treatment</h1>
-    </header>
-    <main>
-        <section>
-            <h2>About the Project</h2>
 
-            <p> This project, "Efficient System Design for Cancer Detection and Treatment," has four major goals with the following specific activities: </p>
-<dl>
-    <dt><b>Goal 1</b></dt>
-    <dd> <b>Building ML-based Advanced Algorithms for Modeling Cancer Growth and Treatment:</b> This goal focuses on developing sophisticated machine learning models that can accurately predict how cancer will grow and respond to different treatments. This could revolutionize personalized medicine by allowing doctors to tailor therapies to individual patients.
-        <p><b>Specifically, this will include: </b> Designing algorithms based on Physics Informed Neural Networks (PINN). PINNs incorporate physical laws and constraints (like tumor growth dynamics) into the machine learning model, potentially leading to more accurate and reliable predictions.
-        </p>
-    </dd>
-    <dt><b>Goal 2 </b></dt>
-    <dd><b>Designing ML-based Advanced Algorithms for Image Processing:</b> This involves creating machine learning algorithms that can analyze medical images (like X-rays, MRIs, and CT scans) to detect and diagnose cancer more effectively. This could lead to earlier and more accurate diagnoses, improving patient outcomes.
-        <p><b>Specifically, this will include:</b> Developing algorithms for automatic counting of cancer cells on photos taken from built-in microscope cameras. This automation could significantly speed up analysis and improve accuracy in laboratory settings. 
-     </dd>
-        </p>
-    <dt><b>Goal 3</b></dt>
-    <dd><b>Creating Hardware Design for Classical and DL Based Cancer Classification:</b> This goal aims to develop specialized hardware that can efficiently run both traditional and deep learning algorithms for cancer classification. This could speed up diagnosis and make it more accessible, particularly in areas with limited computing resources. 
-    </dd>
-    
-    <dt><b>Goal 4</b></dt>
-    <dd><b>Making Education Plan for Interdisciplinary Education and Research in the foundations and the applications of Machine Learning in the Life STEM:</b> This focuses on developing educational programs that train the next generation of scientists and engineers to apply machine learning to life sciences. This interdisciplinary approach will foster innovation and collaboration between fields.
-        <p><b>Specifically, this will include: </b>
-        <ul>
-        <li>Conducting summer and normal semester undergraduate research programs to provide hands-on experience. </li>
-        <li>Designing and piloting two new courses: </li>
-            <ol>
-            <li>"Mathematics for Machine Learning" to equip students with the necessary mathematical foundations.</li>
-            <li>"IoT for Healthcare" to explore the applications of the Internet of Things in healthcare, including remote monitoring and data collection. </li> 
-            </ol>
-        </ul>
-        </p>
-    </dd>
-    
-</dl>
-<p>
-By pursuing these four goals with these specific activities, the project hopes to make significant contributions to the fight against cancer.
-</p>
-<p><b>The project in NSF Website</b> is this <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2318573">https://www.nsf.gov/awardsearch/showAward?AWD_ID=2318573</a></p>
-        </section>
+    <header>
+        <div class="badge">NSF Award #2318573</div>
+        <h1>Efficient System Design for Cancer Detection and Treatment</h1>
+        <p>Advancing Computational Oncology through Machine Learning, Physics-Informed Neural Networks, and Interdisciplinary Life STEM Education.</p>
+    </header>
+
+    <div class="container">
         
-        <section>
-            <h2>Methodology</h2>
-            <p>Details about the methodologies used in the project.</p>
+        <!-- About Section -->
+        <section id="about">
+            <h2><i class="fa-solid fa-circle-info"></i> About the Project</h2>
+            <p>This project tackles critical computational challenges in oncology by uniting machine learning, hardware acceleration, and rigorous mathematical modeling. The research framework is built upon four major goals:</p>
+            
+            <div class="goals-grid">
+                <div class="goal-card" style="border-left-color: var(--bright-yellow);">
+                    <h3>Goal 1: Modeling Cancer Growth</h3>
+                    <p>Building advanced machine learning algorithms using <strong>Physics-Informed Neural Networks (PINNs)</strong> to integrate physical laws and tumor dynamics constraints into predictive models.</p>
+                </div>
+                
+                <div class="goal-card">
+                    <h3>Goal 2: Medical Image Processing</h3>
+                    <p>Developing computer vision workflows for automated counting and classification of cancer cells captured via built-in microscope camera systems.</p>
+                </div>
+
+                <div class="goal-card">
+                    <h3>Goal 3: Hardware Design</h3>
+                    <p>Creating specialized hardware architectures optimized to efficiently run classical and deep learning classification models in resource-limited settings.</p>
+                </div>
+
+                <div class="goal-card" style="border-left-color: var(--bright-yellow);">
+                    <h3>Goal 4: Interdisciplinary Education</h3>
+                    <p>Pioneering new curricula—including <em>"Mathematics for Machine Learning"</em> and <em>"IoT for Healthcare"</em>—backed by undergraduate research programs.</p>
+                </div>
+            </div>
+
+            <div class="nsf-link-box">
+                <div>
+                    <strong>Official NSF Award Record:</strong> View project funding, abstract, and details on the official platform.
+                </div>
+                <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2318573" target="_blank">View NSF Record <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            </div>
         </section>
-        <section>
-            <h2>Results</h2>
-            <p>Summary of the results obtained from the project.</p>
+
+        <!-- Methodology Section -->
+        <section id="methodology">
+            <h2><i class="fa-solid fa-gears"></i> Methodology</h2>
+            <p>Our approach integrates rigorous mathematical formulations with scalable computational frameworks. For instance, tumor growth dynamics are modeled by constraining neural network loss functions with partial differential equations:</p>
+            
+            <div style="text-align: center; margin: 1.5rem 0; padding: 1rem; background: var(--bg-light); border-radius: 6px;">
+                $$\frac{\partial u}{\partial t} = D \nabla^2 u + r u \left(1 - \frac{u}{K}\right) - \mathcal{N}(u; \theta)$$
+            </div>
+            
+            <p>By enforcing these conservation laws directly into deep learning architectures, our models maintain biological interpretability and high accuracy even with sparse training datasets.</p>
         </section>
-        <section>
-            <h2>Conclusion</h2>
-            <p>Final thoughts and future directions for the project.</p>
+
+        <!-- Team Members Section -->
+        <section id="team">
+            <h2><i class="fa-solid fa-users"></i> Team Members</h2>
+            <p>Collaborative interdisciplinary researchers, faculty leads, and student scholars driving the project:</p>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <h3>Dr. Widodo Samyono</h3>
+                    <p>Principal Investigator</p>
+                    <span>Computational Applied Mathematics</span>
+                </div>
+                <div class="team-card" style="border-left-color: var(--bright-yellow);">
+                    <h3>Dr. Shakil Akhtar</h3>
+                    <p>Collaborator</p>
+                    <span>Computer Science & IT (Clayton State University)</span>
+                </div>
+                <div class="team-card">
+                    <h3>Undergraduate Researchers</h3>
+                    <p>JSURIP Cohorts & Student Fellows</p>
+                    <span>Life STEM & Machine Learning Lab</span>
+                </div>
+            </div>
         </section>
-    </main>
+
+        <!-- Research Repositories & Code Section -->
+        <section id="repositories">
+            <h2><i class="fa-solid fa-code"></i> Research Repositories & Colab Notebooks</h2>
+            <p>Access our open-source modeling code, Google Colab laboratory exercises, and software architectures:</p>
+            
+            <div style="margin-top: 1.5rem;">
+                <div class="repo-box">
+                    <div>
+                        <strong>MATH4390 Final Report & Tracks (A, B, C)</strong>
+                        <p style="font-size: 0.85rem; color: #64748B;">Spatial tumor dynamics, reaction-diffusion systems, and genomic biomarker classification.</p>
+                    </div>
+                    <a href="https://github.com/wsamyono" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </div>
+                
+                <div class="repo-box">
+                    <div>
+                        <strong>Parallel Computing for Life STEM Colab Lab</strong>
+                        <p style="font-size: 0.85rem; color: #64748B;">Interactive Python notebooks for mathematical modeling and machine learning workflows.</p>
+                    </div>
+                    <a href="https://colab.research.google.com" target="_blank"><i class="fa-solid fa-laptop-code"></i> Google Colab</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications">
+            <h2><i class="fa-solid fa-book-open"></i> Publications & Presentations</h2>
+            <p>Selected papers, conference talks, and workshop proceedings stemming from the project:</p>
+            
+            <ul class="pub-list">
+                <li class="pub-item">
+                    <strong>Modeling Cancer Cell Growth Predictions Based on Classical Mathematical Models with Physics-Informed Neural Network</strong>
+                    <p style="font-size: 0.9rem; margin-top: 0.3rem;">Presented at the BEER Symposium, George Mason University.</p>
+                </li>
+                <li class="pub-item" style="border-left-color: var(--accent-blue);">
+                    <strong>Quantifying Nanoparticle-Induced Apoptosis in MCF-7 Cancer Cells via Deep Learning Frameworks</strong>
+                    <p style="font-size: 0.9rem; margin-top: 0.3rem;">Presented at the BIRS Workshop, Banff, Alberta, Canada.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Results & Impact -->
+        <section id="results">
+            <h2><i class="fa-solid fa-chart-line"></i> Results & Impact</h2>
+            <p>Key outcomes from our student research internships and faculty curriculum hackathons:</p>
+            <ul>
+                <li>Deployment of Google Colab laboratory notebooks for parallel computing in Life STEM.</li>
+                <li>Enhanced accuracy benchmarks in automated in vitro cancer cell apoptosis quantification.</li>
+                <li>Active student stipends and professional development supported via NSF grant extensions.</li>
+            </ul>
+        </section>
+
+    </div>
+
     <footer>
-        <p>© 2024 Widodo Samyono</p>
+        <p>&copy; 2026 Widodo Samyono &bull; Efficient System Design for Cancer Detection and Treatment (ESD4CDaT)</p>
     </footer>
+
 </body>
 </html>
